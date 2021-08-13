@@ -26,9 +26,14 @@ dependencies:
 
   http: ^0.13.3
   google_fonts:
+  weather_icons: ^3.0.0
   flutter_svg:
   geolocator: ^7.4.0
   geocoding:
+  syncfusion_flutter_calendar: ^19.2.55
+  intl:
+  provider:
+  flutter_analog_clock: ^0.1.1
 
 
   # The following adds the Cupertino Icons font to your application.
