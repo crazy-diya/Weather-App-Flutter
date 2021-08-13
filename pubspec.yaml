@@ -30,9 +30,10 @@ dependencies:
   flutter_svg:
   geolocator: ^7.4.0
   geocoding:
-  syncfusion_flutter_calendar: ^19.2.55
-  intl:
-  provider:
+  syncfusion_flutter_calendar: ^19.1.59
+  syncfusion_flutter_core:
+  intl: ^0.17.0
+  provider: ^5.0.0
   flutter_analog_clock: ^0.1.1
 
 

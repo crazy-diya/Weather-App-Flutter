@@ -9,6 +9,7 @@ import 'package:weather_app/model/event_data_source.dart';
 import 'package:weather_app/model/event_provider.dart';
 
 import 'package:weather_app/model/weather_api_model.dart';
+import 'package:weather_app/pages/calendar.dart';
 import 'package:weather_app/services/api_call.dart';
 
 import 'package:geocoding/geocoding.dart';
@@ -568,35 +569,6 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-/*
-  Future<void> currentLocationApiDataGetRefreshing() async {
-    _getCurrentLocation();
-    Future.delayed(const Duration(seconds: 5), () {
-      print("Welcome..............!");
-      setState(() {
-        _currentAddress = _currentAddress;
-      });
-    });
-    WeatherApiModel model = await ApiCall().getData("$_currentAddress") as WeatherApiModel;
-    setState(() {
-      localTime = model.localTime;
-      locationName = model.locationName;
-      locationRegion = model.locationRegion;
-      locationCountry = model.locationCountry;
-      currentTemperature = model.currentTemperature;
-      isDay = model.isDay;
-      conditionText = model.conditionText;
-      conditionIcon = model.conditionIcon;
-      windSpeed = model.windSpeed;
-      currentHumidity = model.currentHumidity;
-      precipitation = model.precipitation;
-      isRain = model.isRain;
-      currentConditionText = model.currentConditionText;
-      currentConditionIcon = model.currentConditionIcon;
-    });
-  }
-
-  */
 
   Future<void> calenderBuild() async {
     double height = MediaQuery.of(context).size.height;
@@ -611,12 +583,12 @@ class _HomePageState extends State<HomePage> {
           Padding(
             padding:
                 const EdgeInsets.only(top: 75, right: 35, bottom: 75, left: 35),
-            child: SfCalendar(
+            child: Calender() /*SfCalendar(
               view: CalendarView.month,
               // dataSource: EventDataSource(events),
               initialSelectedDate: DateTime.now(),
               cellBorderColor: Colors.transparent,
-            ),
+            )*/,
           ),
           Positioned(
             bottom: 10,

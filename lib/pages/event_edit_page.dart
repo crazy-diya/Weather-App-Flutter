@@ -29,8 +29,15 @@ class _EventEditorPageState extends State<EventEditorPage> {
       toDate = DateTime.now().add(
         Duration(hours: 2),
       );
+    }else{
+      final event =widget.event!;
+
+      titleController.text = event.title;
+      fromDate = event.from;
+      toDate = event.to;
     }
   }
+
 
   @override
   void dispose() {
@@ -39,30 +46,27 @@ class _EventEditorPageState extends State<EventEditorPage> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => EventProvider(),
-      child: Scaffold(
-        appBar: AppBar(
-          leading: CloseButton(),
-          actions: buildEditingAction(),
-        ),
-        body: SingleChildScrollView(
-          child: Form(
-            key: _formKey,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                buildTitle(),
-                SizedBox(height: 12),
-                buildDateTimePicker(),
-              ],
-            ),
+  Widget build(BuildContext context) =>
+    Scaffold(
+      appBar: AppBar(
+        leading: CloseButton(),
+        actions: buildEditingAction(),
+      ),
+      body: SingleChildScrollView(
+        child: Form(
+          key: _formKey,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              buildTitle(),
+              SizedBox(height: 12),
+              buildDateTimePicker(),
+            ],
           ),
         ),
       ),
     );
-  }
+
 
   List<Widget> buildEditingAction() => [
         ElevatedButton.icon(
@@ -167,13 +171,22 @@ class _EventEditorPageState extends State<EventEditorPage> {
         to: toDate,
         isAllDay: false,
       );
+
+      final isEditing = widget.event != null;
       final provider = Provider.of<EventProvider>(context, listen: false);
-      provider.addEvent(event);
+
+      if(isEditing){
+        provider.editEvent(event,widget.event!);
+        Navigator.of(context).pop();
+      }else{
+        provider.addEvent(event);
+      }
+
       Navigator.of(context).pop();
     }
   }
 
-  pickToDataTime({required bool pickDate}) async {
+  Future pickToDataTime({required bool pickDate}) async {
     final date = await pickDateTime(
       toDate,
       pickDate: pickDate,
