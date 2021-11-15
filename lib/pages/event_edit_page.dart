@@ -52,16 +52,19 @@ class _EventEditorPageState extends State<EventEditorPage> {
         leading: CloseButton(),
         actions: buildEditingAction(),
       ),
-      body: SingleChildScrollView(
-        child: Form(
-          key: _formKey,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              buildTitle(),
-              SizedBox(height: 12),
-              buildDateTimePicker(),
-            ],
+      body: Padding(
+        padding: const EdgeInsets.only(top: 10,right: 20,left: 20),
+        child: SingleChildScrollView(
+          child: Form(
+            key: _formKey,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                buildTitle(),
+                SizedBox(height: 12),
+                buildDateTimePicker(),
+              ],
+            ),
           ),
         ),
       ),
@@ -81,8 +84,9 @@ class _EventEditorPageState extends State<EventEditorPage> {
       ];
 
   Widget buildTitle() => TextFormField(
-        style: TextStyle(fontSize: 24),
+        style: TextStyle(fontSize: 18),
         decoration: InputDecoration(
+          prefixIcon: Icon(Icons.edit,size: 18,),
           border: UnderlineInputBorder(),
           hintText: 'Add Title',
         ),

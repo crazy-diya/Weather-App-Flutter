@@ -25,7 +25,7 @@ class EventViewingPage extends StatelessWidget {
               height: 32,
             ),
             Text(
-              event.title,
+              event.description,
               style: TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
@@ -36,7 +36,7 @@ class EventViewingPage extends StatelessWidget {
               height: 24,
             ),
             Text(
-              event.description,
+              event.title,
               style: TextStyle(
                 fontSize: 18,
                 color: Colors.black,

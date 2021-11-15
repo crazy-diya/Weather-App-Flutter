@@ -1,12 +1,9 @@
 import 'dart:async';
 import 'dart:ui';
 
+import 'package:custom_timer/custom_timer.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:provider/provider.dart';
-import 'package:syncfusion_flutter_calendar/calendar.dart';
-import 'package:weather_app/model/event_data_source.dart';
-import 'package:weather_app/model/event_provider.dart';
 
 import 'package:weather_app/model/weather_api_model.dart';
 import 'package:weather_app/pages/calendar.dart';
@@ -148,6 +145,12 @@ class _HomePageState extends State<HomePage> {
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
 
+    int preDate = DateTime.now().day;
+    int preHours = DateTime.now().hour;
+    int preMunit = DateTime.now().minute;
+    int preSecond = DateTime.now().second;
+
+
     return Scaffold(
       body: RefreshIndicator(
         onRefresh: requestLocationPermision,
@@ -187,91 +190,109 @@ class _HomePageState extends State<HomePage> {
                         Align(
                           child: Padding(
                             padding: const EdgeInsets.only(
-                                left: 20.0, right: 10, top: 7, bottom: 7),
+                                left: 20.0, right: 20, top: 17, bottom: 47),
                             child: Center(
-                              child: TextField(
-                                controller: cityController,
-                                style: TextStyle(color: Colors.white),
-                                decoration: InputDecoration(
-                                  border: InputBorder.none,
-                                  labelText: "Enter city name",
-                                  errorText: _validate
-                                      ? 'Value Can\'t Be Empty'
-                                      : null,
-                                  labelStyle: GoogleFonts.lato(
+                              child: Container(
+                                height: 50,
+                                padding: EdgeInsets.only(left: 20, right: 10),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(45),
+                                  border: Border.all(
                                     color: Colors.white,
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.bold,
+                                    width: 1,
+                                    style: BorderStyle.solid,
                                   ),
-                                  suffixIcon: IconButton(
-                                    icon: Icon(
-                                      Icons.search,
+                                ),
+                                child: TextField(
+                                  controller: cityController,
+                                  style: TextStyle(color: Colors.white),
+                                  decoration: InputDecoration(
+                                    border: InputBorder.none,
+                                    hintText: "Enter city name",
+                                    hintStyle: GoogleFonts.lato(
                                       color: Colors.white,
-                                      size: 24,
+                                      // fontSize: width * 0.037,
+                                      fontWeight: FontWeight.bold,
                                     ),
-                                    onPressed: () async {
-                                      setState(() {
-                                        cityController.text.isEmpty
-                                            ? _validate = true
-                                            : _validate = false;
-                                      });
+                                    // alignLabelWithHint: true,
+                                    // labelText: "Enter city name",
+                                    errorText: _validate
+                                        ? 'Value Can\'t Be Empty'
+                                        : null,
+                                    // labelStyle: GoogleFonts.lato(
+                                    //   color: Colors.white,
+                                    //   fontSize: width * 0.037,
+                                    //   fontWeight: FontWeight.bold,
+                                    // ),
+                                    suffixIcon: IconButton(
+                                      icon: Icon(
+                                        Icons.search,
+                                        color: Colors.white,
+                                        size: width * 0.05,
+                                      ),
+                                      onPressed: () async {
+                                        setState(() {
+                                          cityController.text.isEmpty
+                                              ? _validate = true
+                                              : _validate = false;
+                                        });
 
-                                      if (_validate != true) {
-                                        try {
-                                          WeatherApiModel searchModel =
-                                              await ApiCall().getData(
-                                                      cityController
-                                                          .text
-                                                          .toString())
-                                                  as WeatherApiModel;
-                                          setState(() {
-                                            localTime = searchModel.localTime;
-                                            locationName =
-                                                searchModel.locationName;
-                                            locationRegion =
-                                                searchModel.locationRegion;
-                                            locationCountry =
-                                                searchModel.locationCountry;
-                                            currentTemperature =
-                                                searchModel.currentTemperature;
-                                            isDay = searchModel.isDay;
-                                            conditionText =
-                                                searchModel.conditionText;
-                                            conditionIcon =
-                                                searchModel.conditionIcon;
-                                            windSpeed = searchModel.windSpeed
-                                                .toString();
-                                            currentHumidity = searchModel
-                                                .currentHumidity
-                                                .toString();
-                                            precipitation = searchModel
-                                                .precipitation
-                                                .toString();
-                                            isRain = searchModel.isRain;
-                                            currentConditionText = searchModel
-                                                .currentConditionText;
-                                            currentConditionIcon = searchModel
-                                                .currentConditionIcon;
-                                          });
-                                          cityController.clear();
-                                        } on Exception catch (exception) {
-                                          print("Exception is :$exception ");
-                                        } catch (error) {
-                                          print("error is $error");
+                                        if (_validate != true) {
+                                          try {
+                                            WeatherApiModel searchModel =
+                                                await ApiCall().getData(
+                                                        cityController.text
+                                                            .toString())
+                                                    as WeatherApiModel;
+                                            setState(() {
+                                              localTime = searchModel.localTime;
+                                              locationName =
+                                                  searchModel.locationName;
+                                              locationRegion =
+                                                  searchModel.locationRegion;
+                                              locationCountry =
+                                                  searchModel.locationCountry;
+                                              currentTemperature = searchModel
+                                                  .currentTemperature;
+                                              isDay = searchModel.isDay;
+                                              conditionText =
+                                                  searchModel.conditionText;
+                                              conditionIcon =
+                                                  searchModel.conditionIcon;
+                                              windSpeed = searchModel.windSpeed
+                                                  .toString();
+                                              currentHumidity = searchModel
+                                                  .currentHumidity
+                                                  .toString();
+                                              precipitation = searchModel
+                                                  .precipitation
+                                                  .toString();
+                                              isRain = searchModel.isRain;
+                                              currentConditionText = searchModel
+                                                  .currentConditionText;
+                                              currentConditionIcon = searchModel
+                                                  .currentConditionIcon;
+                                            });
+                                            cityController.clear();
+                                          } on Exception catch (exception) {
+                                            print("Exception is :$exception ");
+                                          } catch (error) {
+                                            print("error is $error");
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(SnackBar(
+                                              content: Text("Wrong City Name!"),
+                                            ));
+                                          }
+                                        } else {
                                           ScaffoldMessenger.of(context)
                                               .showSnackBar(SnackBar(
-                                            content: Text("Wrong City Name!"),
+                                            content: Text("Fill the Field!"),
                                           ));
                                         }
-                                      } else {
-                                        ScaffoldMessenger.of(context)
-                                            .showSnackBar(SnackBar(
-                                          content: Text("Fill the Field!"),
-                                        ));
-                                      }
-                                    },
+                                      },
+                                    ),
+                                    fillColor: Colors.black,
                                   ),
-                                  fillColor: Colors.black,
                                 ),
                               ),
                             ),
@@ -289,7 +310,7 @@ class _HomePageState extends State<HomePage> {
                                     style: GoogleFonts.lato(
                                         color: Colors.white,
                                         fontWeight: FontWeight.bold,
-                                        fontSize: 15)),
+                                        fontSize: width * 0.04)),
                                 SizedBox(
                                   height: 5,
                                 ),
@@ -298,7 +319,7 @@ class _HomePageState extends State<HomePage> {
                                   style: GoogleFonts.lato(
                                       color: Colors.white,
                                       fontWeight: FontWeight.bold,
-                                      fontSize: 35),
+                                      fontSize: width * 0.1),
                                 ),
                                 SizedBox(
                                   height: 5,
@@ -307,19 +328,92 @@ class _HomePageState extends State<HomePage> {
                                     style: GoogleFonts.lato(
                                         color: Colors.white,
                                         fontWeight: FontWeight.bold,
-                                        fontSize: 15))
+                                        fontSize: width * 0.04))
                               ],
                             ),
                           ),
                         ),
-                        // Spacer(),
                         Align(
                           alignment: Alignment.centerLeft,
                           child: Padding(
-                            padding: const EdgeInsets.only(left: 20),
-                            child: GestureDetector(
-                              child: ClockDemo(),
-                              onTap: calenderBuild,
+                            padding: const EdgeInsets.only(left: 20, right: 20),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                GestureDetector(
+                                  child: ClockDemo(),
+                                  onTap: calenderBuild,
+                                ),
+                                Card(
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(20)),
+                                  color: Colors.black12,
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                        color: Colors.transparent),
+                                    width:
+                                        MediaQuery.of(context).size.width * 0.4,
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(18.0),
+                                      child: Center(
+                                        child: Column(
+                                          children: [
+                                            Text(
+                                              "Your next task finish at :",
+                                              style: GoogleFonts.lato(
+                                                color: Colors.white,
+                                                fontSize: width * 0.037,
+                                              ),
+                                            ),
+                                            CustomTimer(
+                                              from: Duration(
+                                                days: 19 - preDate,
+                                                hours: 20 - preHours,
+                                                minutes: 5 - preMunit,
+                                                seconds: 54 - preSecond,
+                                              ),
+                                              to: Duration(
+                                                days: 0,
+                                                hours: 0,
+                                                minutes: 0,
+                                                seconds: 0,
+                                              ),
+                                              onBuildAction:
+                                                  CustomTimerAction.auto_start,
+                                              builder: (CustomTimerRemainingTime
+                                                  remaining) {
+                                                return Text(
+                                                  "${remaining.days} Days\n${remaining.hours} Hours\n${remaining.minutes} Minutes\n${remaining.seconds} Seconds",
+                                                  style: GoogleFonts.lato(
+                                                    color: Colors.white,
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: width * 0.05,
+                                                  ),
+                                                );
+
+                                                Text(
+                                                  "${remaining.hours}:${remaining.minutes}:${remaining.seconds}",
+                                                  style:
+                                                      TextStyle(fontSize: 30.0),
+                                                );
+                                              },
+                                            ),
+
+                                            /*Text(
+                                              "21 Days\n07 Hours\n43 Minutes",
+                                              style: GoogleFonts.lato(
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: width * 0.06,
+                                              ),
+                                            ),*/
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                         ),
@@ -334,7 +428,7 @@ class _HomePageState extends State<HomePage> {
                                 Text(
                                   "$currentTemperature\u2103",
                                   style: GoogleFonts.lato(
-                                      fontSize: 85,
+                                      fontSize: width * 0.2,
                                       fontWeight: FontWeight.w300,
                                       color: Colors.white),
                                 ),
@@ -351,8 +445,8 @@ class _HomePageState extends State<HomePage> {
                                           children: [
                                             Image.network(
                                               "https:$currentConditionIcon",
-                                              height: 30,
-                                              width: 30,
+                                              height: width * 0.08,
+                                              width: width * 0.08,
                                               color: Colors.white,
                                             ),
                                             SizedBox(
@@ -361,7 +455,7 @@ class _HomePageState extends State<HomePage> {
                                             Text(
                                               "$currentConditionText",
                                               style: GoogleFonts.lato(
-                                                  fontSize: 18,
+                                                  fontSize: width * 0.045,
                                                   fontWeight: FontWeight.bold,
                                                   color: Colors.white),
                                             ),
@@ -378,8 +472,8 @@ class _HomePageState extends State<HomePage> {
                                           children: [
                                             Image.network(
                                               "https:$conditionIcon",
-                                              height: 30,
-                                              width: 30,
+                                              height: width * 0.08,
+                                              width: width * 0.08,
                                               color: Colors.white,
                                             ),
                                             SizedBox(
@@ -388,7 +482,7 @@ class _HomePageState extends State<HomePage> {
                                             Text(
                                               "$conditionText",
                                               style: GoogleFonts.lato(
-                                                  fontSize: 18,
+                                                  fontSize: width * 0.045,
                                                   fontWeight: FontWeight.bold,
                                                   color: Colors.white),
                                             ),
@@ -409,7 +503,6 @@ class _HomePageState extends State<HomePage> {
                           indent: 20,
                           color: Colors.white30,
                         ),
-
                         Align(
                           child: Padding(
                             padding:
@@ -423,7 +516,7 @@ class _HomePageState extends State<HomePage> {
                                     Text(
                                       "Wind",
                                       style: GoogleFonts.lato(
-                                        fontSize: 15,
+                                        fontSize: width * 0.035,
                                         color: Colors.white70,
                                         fontWeight: FontWeight.w700,
                                       ),
@@ -431,7 +524,7 @@ class _HomePageState extends State<HomePage> {
                                     Icon(
                                       WeatherIcons.windy,
                                       color: Colors.white,
-                                      size: 20,
+                                      size: width * 0.055,
                                     ),
                                     SizedBox(
                                       height: 5,
@@ -439,7 +532,7 @@ class _HomePageState extends State<HomePage> {
                                     Text(
                                       "$windSpeed",
                                       style: GoogleFonts.lato(
-                                        fontSize: 24,
+                                        fontSize: width * 0.055,
                                         color: Colors.white,
                                         fontWeight: FontWeight.w700,
                                       ),
@@ -447,7 +540,7 @@ class _HomePageState extends State<HomePage> {
                                     Text(
                                       "km/h",
                                       style: GoogleFonts.lato(
-                                        fontSize: 13,
+                                        fontSize: width * 0.035,
                                         color: Colors.white70,
                                         fontWeight: FontWeight.w700,
                                       ),
@@ -460,7 +553,7 @@ class _HomePageState extends State<HomePage> {
                                     Text(
                                       "Rain",
                                       style: GoogleFonts.lato(
-                                        fontSize: 15,
+                                        fontSize: width * 0.035,
                                         color: Colors.white70,
                                         fontWeight: FontWeight.w700,
                                       ),
@@ -468,7 +561,7 @@ class _HomePageState extends State<HomePage> {
                                     Icon(
                                       WeatherIcons.rain,
                                       color: Colors.white,
-                                      size: 20,
+                                      size: width * 0.055,
                                     ),
                                     SizedBox(
                                       height: 5,
@@ -476,7 +569,7 @@ class _HomePageState extends State<HomePage> {
                                     Text(
                                       "$precipitation",
                                       style: GoogleFonts.lato(
-                                        fontSize: 24,
+                                        fontSize: width * 0.055,
                                         color: Colors.white,
                                         fontWeight: FontWeight.w700,
                                       ),
@@ -484,7 +577,7 @@ class _HomePageState extends State<HomePage> {
                                     Text(
                                       "mm",
                                       style: GoogleFonts.lato(
-                                        fontSize: 13,
+                                        fontSize: width * 0.035,
                                         color: Colors.white70,
                                         fontWeight: FontWeight.w700,
                                       ),
@@ -497,7 +590,7 @@ class _HomePageState extends State<HomePage> {
                                     Text(
                                       "Humidity",
                                       style: GoogleFonts.lato(
-                                        fontSize: 15,
+                                        fontSize: width * 0.035,
                                         color: Colors.white70,
                                         fontWeight: FontWeight.w700,
                                       ),
@@ -505,7 +598,7 @@ class _HomePageState extends State<HomePage> {
                                     Icon(
                                       WeatherIcons.humidity,
                                       color: Colors.white,
-                                      size: 20,
+                                      size: width * 0.055,
                                     ),
                                     SizedBox(
                                       height: 5,
@@ -513,7 +606,7 @@ class _HomePageState extends State<HomePage> {
                                     Text(
                                       "$currentHumidity",
                                       style: GoogleFonts.lato(
-                                        fontSize: 24,
+                                        fontSize: width * 0.055,
                                         color: Colors.white,
                                         fontWeight: FontWeight.w700,
                                       ),
@@ -521,7 +614,7 @@ class _HomePageState extends State<HomePage> {
                                     Text(
                                       "%",
                                       style: GoogleFonts.lato(
-                                        fontSize: 13,
+                                        fontSize: width * 0.035,
                                         color: Colors.white70,
                                         fontWeight: FontWeight.w700,
                                       ),
@@ -569,7 +662,6 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-
   Future<void> calenderBuild() async {
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
@@ -583,12 +675,14 @@ class _HomePageState extends State<HomePage> {
           Padding(
             padding:
                 const EdgeInsets.only(top: 75, right: 35, bottom: 75, left: 35),
-            child: Calender() /*SfCalendar(
+            child:
+                Calender() /*SfCalendar(
               view: CalendarView.month,
               // dataSource: EventDataSource(events),
               initialSelectedDate: DateTime.now(),
               cellBorderColor: Colors.transparent,
-            )*/,
+            )*/
+            ,
           ),
           Positioned(
             bottom: 10,
@@ -607,7 +701,9 @@ class _HomePageState extends State<HomePage> {
                   color: Colors.white,
                   size: 18,
                 ),
-                onPressed: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => EventEditorPage(),)),
+                onPressed: () => Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => EventEditorPage(),
+                )),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(50),
                 ),

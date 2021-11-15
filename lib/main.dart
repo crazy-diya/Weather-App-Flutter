@@ -4,7 +4,9 @@ import 'package:weather_app/model/event_provider.dart';
 
 import 'pages/home_page.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
   runApp(MyApp());
 }
 
